@@ -1,0 +1,29 @@
+DATE PICKER QUERY
+
+select * from cart where str_to_date(dt,'%d/%m/%Y')>=str_to_date('19/06/2018','%d/%m/%Y')
+
+------------------------------------------------------
+
+DATE PICKER
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+  <script>
+    $( function() {
+    $( "#dtxt" ).datepicker({ //include id in code
+		 dateFormat: "dd/mm/yy"
+		
+		});
+  } );
+    </script>
+	
+-------------------------------------------------------
+
+DESCENDING ORDER QUERY
+
+SELECT * FROM `orderdetails` order by oid desc
+
+-------------------------------------------------------
