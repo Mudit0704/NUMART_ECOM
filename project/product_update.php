@@ -25,20 +25,16 @@
 
 
 	$pid = $_REQUEST["pid"];
-
-	$qr = "select * from product where pid=".$pid;
-
-	$res = mysqli_query($cn,$qr);
-
+	$p1 = "SET @p0='".$pid."'";
+	
+	mysqli_query($cn,$p1);
+	$res = mysqli_query($cn,"CALL getProduct (@p0)");
+	mysqli_next_result($cn);
 	$row = mysqli_fetch_array($res);
 
-	$qr2 = "select * from type";
-
-	$res2 = mysqli_query($cn,$qr2);
-
-	$br = "select * from brand";
-
-	$res3 = mysqli_query($cn,$br);
+	$res2 = mysqli_query($cn,"CALL getAllTypes ()");
+	mysqli_next_result($cn);
+	$res3 = mysqli_query($cn,"CALL getAllBrands ()");
 
 	?>
 
@@ -64,7 +60,7 @@
 				<div class="form-row">
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Product Name</label>
-						<input type="text" class="form-control " id="validationServer01" placeholder="Name" name="ntxt" value="<?php echo $row[1] ?>" required>
+						<input type="text" class="form-control " id="validationServer01"  name="ntxt" value="<?php echo $row[1] ?>" required>
 					</div>
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Type</label>
@@ -110,7 +106,7 @@
 					</div>
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Price</label>
-						<input type="text" class="form-control " id="validationServer01" placeholder="Name" name="ptxt" value="<?php echo $row[5] ?>" required>
+						<input type="text" class="form-control " id="validationServer01" name="ptxt" value="<?php echo $row[5] ?>" required>
 					</div>
 				</div>
 				<div class="form-row">
@@ -150,7 +146,7 @@
 					</div>
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Added By</label>
-						<input type="text" class="form-control " id="validationServer01" placeholder="Name" name="atxt" value="<?php echo $row[8] ?>" required>
+						<input type="text" class="form-control " id="validationServer01" name="atxt" value="<?php echo $row[8] ?>" required>
 					</div>
 				</div><br>
 				<button class="btn btn-primary btn-outline-dark" type="submit" name="submit" value="Update" style="width: 100%;">Update</button>

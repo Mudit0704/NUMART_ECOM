@@ -56,32 +56,7 @@
 
 	?>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="./userhomepg.php">NUMart</a>
-
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item">
-					<a class="nav-link active" href="userprogrid.php">View Products<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userprofile.php">View Profile<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userviewcart.php">View Cart<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="orderhistory.php">View Orders<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userlogout.php">Logout</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	<?php include("usernav.php"); ?>
 	<br>
 
 	<?php
@@ -90,22 +65,24 @@
 	$msg="";
 
 	$pid = $_REQUEST["pid"];
-
-	$qr = "select * from product where pid=".$pid;
-
-	$res = mysqli_query($cn, $qr);
-
+	$p1 = "SET @p0='".$pid."'";
+	
+	mysqli_query($cn,$p1);
+	$res = mysqli_query($cn, "CALL getProduct (@p0)");
+	mysqli_next_result($cn);
 	$row = mysqli_fetch_array($res);
 
-	$br = "select image_nm,sub_id from subimg where pid=".$pid;
-
-	$res1 = mysqli_query($cn, $br);
-
-	$cr = "SELECT brand_name,type_name FROM product p1, brand b1, type t1 WHERE p1.bid=b1.brand_id and p1.tid=t1.type_id and p1.pid=".$pid;
-
-	$res2 = mysqli_query($cn, $cr);
-
+	$br = "SET @p0='".$row[2]."'";
+	mysqli_query($cn,$br);
+	$res2 = mysqli_query($cn, "CALL getBrandDetails (@p0)");
 	$row2 = mysqli_fetch_array($res2);
+	mysqli_next_result($cn);
+
+	$ty = "SET @p0='".$row[3]."'";
+	mysqli_query($cn,$ty);
+	$res3 = mysqli_query($cn, "CALL getTypeDetails (@p0)");
+	mysqli_next_result($cn);
+	$row3 = mysqli_fetch_array($res3);
 
 	$amt = $_REQUEST["amt"];
 
@@ -140,13 +117,13 @@
 					</div>
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Brand</label>
-						<input type="text" class="form-control " name="btxt" value="<?php echo $row2[0] ?>" readonly />
+						<input type="text" class="form-control " name="btxt" value="<?php echo $row2[1] ?>" readonly />
 					</div>
 				</div>
 				<div class="form-row">
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Type</label>
-						<input type="text" class="form-control " name="tytxt" value="<?php echo $row2[1] ?>" readonly />
+						<input type="text" class="form-control " name="tytxt" value="<?php echo $row3[1] ?>" readonly />
 					</div>
 					<div class="col-md-6">
 						<label for="validationServer01" style="color: white;">Price</label>
@@ -160,7 +137,7 @@
 						if($row[7]=="Y") {
 								?>	
 
-									<input class="form-control" type="number" name="qtxt" min="1" max="5" onBlur="calAmt(prtxt,ptxt,this)" value="<?php echo $qty ?>" />	
+									<input class="form-control" type="number" name="qtxt" min="1" max="5" onchange="calAmt(prtxt,ptxt,this)" value="<?php echo $qty ?>" />	
 
 									<?php
 								} else { ?>
@@ -171,13 +148,7 @@
 						<label for="validationServer01" style="color: white;">Sub amount</label>
 						<input type="text" class="form-control " value="<?php echo $amt ?>" readonly />
 					</div>
-				</div>
-				<div class="form-row">
-					<div class="col-md-6">
-						<label for="validationServer05" style="color: white;">Order Date</label>
-						<input class="form-control " type="text" name="dtxt" id="dtxt"/ value="<?php echo date("Y/m/d") ?>" readonly>
-					</div>
-				</div> <br>
+				</div><br>
 				<?php
 						if($row[7]=="Y") {
 								?>	

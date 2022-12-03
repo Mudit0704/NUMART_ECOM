@@ -27,7 +27,7 @@
             include("connect.php"); 
             $uid = $_SESSION["uemail"];
             $qr = "SELECT * from ordr order by o_id desc";
-            $res = mysqli_query($cn,$qr);
+            $res = mysqli_query($cn,"CALL getAllOrders()");
             
         ?>
         <div class="container table-responsive">

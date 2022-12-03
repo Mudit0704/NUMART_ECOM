@@ -3,15 +3,6 @@
 <head>
     <title>Add New Address</title>
     <?php include 'head.php';?>
-    <script type="text/javascript">
-
-        function printAdd(c1)
-        {
-            x = c1.value;
-            window.location= "checkout.php?typ="+x;
-        }
-        
-    </script>
 </head>
 <body>
     <?php
@@ -20,7 +11,7 @@
 
     if(!isset($_SESSION["uid"]))
     {
-        header("location:userlogin.php?msg=Sorry your session expired");
+        header("location:index.php?msg=Sorry your session expired");
     }
 
 

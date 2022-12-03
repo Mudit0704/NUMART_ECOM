@@ -4,6 +4,6 @@
 
 	session_start();
 		
-	$cn = mysqli_connect("localhost", "root", "", "updatedecom");
+	$cn = mysqli_connect("localhost", "root", "", "ecommerce");
 
 ?>

@@ -34,17 +34,16 @@
 	if($_REQUEST["del_id"]<>"")
 	{
 		$did = $_REQUEST["del_id"];
-		$qr = "delete from admin where admin_id=".$did;
-		mysqli_query($cn,$qr);
-		$msg = "Data deleted with admin_id ".$did;
+		$p1 = "SET @p0='".$did."'";
+		mysqli_query($cn, $p1);
+		mysqli_query($cn,"CALL deleteAdmin (@p0)");
 	}
 
 	if(isset($_REQUEST["msg"])<>"")
 	{
 		$msg = $_REQUEST["msg"];
 	}
-	$qr="select * from admin";
-	$res = mysqli_query($cn,$qr);
+	$res = mysqli_query($cn,"CALL getAllAdmins()");
 
 
 	?><br>

@@ -21,38 +21,13 @@
 
 	if(!isset($_SESSION["uid"]))
 	{
-		header("location:userlogin.php?msg=Sorry your session expired");
+		header("location:index.php?msg=Sorry your session expired");
 	}
 
 
 	?>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="./userhomepg.php">NUMart</a>
-
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="userprogrid.php">View Products<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userprofile.php">View Profile<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="userviewcart.php">View Cart<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="orderhistory.php">View Orders<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userlogout.php">Logout</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	<?php include("usernav.php"); ?>
 	<br>
 
 	<?php
@@ -62,8 +37,10 @@
 	if($_REQUEST["del_id"]<>"")
 	{
 		$did = $_REQUEST["del_id"];
-		$qr = "delete from detail_cart where dc_id=".$did;
-		mysqli_query($cn, $qr);
+		$p1 = "SET @p0='".$did."'";
+		mysqli_query($cn,$p1);
+		mysqli_query($cn, "CALL deleteFromDetailedCart (@p0)");
+		mysqli_next_result($cn);
 		$msg = "Data deleted with dc_id ".$did;
 	}
 
@@ -73,13 +50,12 @@
 	}
 
 	$uid = $_SESSION["uemail"];
-	$cr = "select * from cart where user_id='".$uid."'and status='ongoing'";
-	$res1 = mysqli_query($cn, $cr);
+	$p1 = "SET @p0='".$uid."'";
+	mysqli_query($cn,$p1);
+	$res1 = mysqli_query($cn, "CALL getOngoingUserCart (@p0)");
+	mysqli_next_result($cn);
 
-	$qr3="SELECT count(*) FROM `cart` WHERE user_id='".$uid."' and status='ongoing'";
-	$res3 = mysqli_query($cn, $qr3);
-	$row3 = mysqli_fetch_array($res3);
-	if($row3[0]>0)
+	if(mysqli_num_rows($res1) > 0)
 	{
 		
 		?>
@@ -117,9 +93,10 @@
 
 
 		<?php
-
-		$qr="select * from detail_cart where c_id='".$cid."'";
-		$res = mysqli_query($cn, $qr);
+		$p1 = "SET @p0='".$cid."'";
+		mysqli_query($cn,$p1);
+		$res = mysqli_query($cn, "CALL getDetailedCart (@p0)");
+		mysqli_next_result($cn);
 
 		?>
 
@@ -144,15 +121,17 @@
 					while($row = mysqli_fetch_array($res))
 					{
 						$pri = $row[4]/$row[3];
-						$qr2="select pname from product where pid=".$row[2];
-						$res2 = mysqli_query($cn, $qr2);
+						$p1 = "SET @p0='".$row[2]."'";
+						mysqli_query($cn,$p1);
+						$res2 = mysqli_query($cn, "CALL getProduct (@p0)");
+						mysqli_next_result($cn);
 						$pronm = mysqli_fetch_array($res2);
 
 						?>
 
 						<tr>
 							<td><?php echo $row[2] ?></td>
-							<td><?php echo $pronm[0] ?></td>
+							<td><?php echo $pronm[1] ?></td>
 							<td><?php echo $pri ?></td>
 							<td><?php echo $row[3] ?></td>
 							<td><?php echo $row[4] ?></td>
@@ -205,5 +184,6 @@
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

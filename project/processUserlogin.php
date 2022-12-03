@@ -4,10 +4,13 @@
 	
 	$uemail = $_REQUEST["idtxt"];
 	$upass = $_REQUEST["ptxt"];
+	$p1 = "SET @p0='".$uemail."'";
+	$p2 = "SET @p1='".$upass."'";
 	
-	$qr = "select * from userdetails where uemail='".$uemail."'and upass='".$upass."'";
+	mysqli_query($cn,$p1);
+	mysqli_query($cn,$p2);
 	
-	$res = mysqli_query($cn, $qr);
+	$res = mysqli_query($cn, "CALL checkUserCredentials (@p0, @p1)");
 	
 	if($row = mysqli_fetch_array($res))
 	{

@@ -35,8 +35,9 @@
 	if($_REQUEST["del_id"]<>"")
 	{
 		$did = $_REQUEST["del_id"];
-		$qr = "delete from type where type_id=".$did;
-		mysqli_query($cn,$qr);
+		$p1 = "SET @p0='".$did."'";
+		mysqli_query($cn,$p1);
+		mysqli_query($cn,"CALL deleteType (@p0)");
 		$msg = "Data deleted with type_id ".$did;
 	}
 
@@ -45,8 +46,7 @@
 		$msg = $_REQUEST["msg"];
 	}
 
-	$qr="select * from type";
-	$res = mysqli_query($cn,$qr);
+	$res = mysqli_query($cn,"CALL getAllTypes()");
 
 	$ty = $_SESSION["type"];
 

@@ -22,10 +22,9 @@
     include("connect.php");
     
     $brand_id = $_REQUEST["brand_id"];
-    
-    $qr = "select * from brand where brand_id=".$brand_id;
-    
-    $res = mysqli_query($cn,$qr);
+    $p1 = "SET @p0='".$brand_id."'";
+    mysqli_query($cn,$p1);
+    $res = mysqli_query($cn,"CALL getBrandDetails (@p0)");
     
     $row = mysqli_fetch_array($res);
     

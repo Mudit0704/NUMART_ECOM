@@ -17,18 +17,38 @@
 	$isAvail = $_REQUEST["g"];
 	$addedby = $_REQUEST["atxt"];
 	
+	$p0 = "SET @p0='".$pid."'";
+	$p1 = "SET @p1='".$pname."'";
+	$p2 = "SET @p2='".$bid."'";
+	$p3 = "SET @p3='".$tid."'";
+	$p5 = "SET @p5='".$price."'";
+	$p6 = "SET @p6='".$dt."'";
+	$p7 = "SET @p7='".$isAvail."'";
+	$p8 = "SET @p8='".$addedby."'";
+	
+	mysqli_query($cn,$p0);
+	mysqli_query($cn,$p1);
+	mysqli_query($cn,$p2);
+	mysqli_query($cn,$p3);
+	mysqli_query($cn,$p5);
+	mysqli_query($cn,$p6);
+	mysqli_query($cn,$p7);
+	mysqli_query($cn,$p8);
+
 	if($fnm<>"")
 	{
-		$qr="update product set pname='".$pname."',bid=".$bid.",tid=".$tid.",img='".$fnm."',price=".$price.",dt='".$dt."',isAvail='".$isAvail."',addedby='".$addedby."'where pid=".$pid;
-		mysqli_query($cn,$qr);
+		$p4 = "SET @p4='".$fnm."'";
 		unlink("uploads//".$oftxt);
 		move_uploaded_file($path,"uploads//".$fnm);
 	}
 	else
 	{
-		$qr="update product set pname='".$pname."',bid=".$bid.",tid=".$tid.",price=".$price.",dt='".$dt."',isAvail='".$isAvail."',addedby='".$addedby."'where pid=".$pid;
-		mysqli_query($cn,$qr);
+		$p4 = "SET @p4='".$oftxt."'";
+		
 	}
+
+	mysqli_query($cn,$p4);
+	mysqli_query($cn,"CALL updateProduct (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8)");
 	
 	header("location:productgrid.php?msg=Product Details uploaded Successfully!");
 	

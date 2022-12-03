@@ -36,8 +36,9 @@
 	if($_REQUEST["del_id"]<>"")
 	{
 		$did = $_REQUEST["del_id"];
-		$qr = "delete from brand where brand_id=".$did;
-		mysqli_query($cn,$qr);
+		$p1 = "SET @p0='".$did."'";
+		mysqli_query($cn,$p1);
+		mysqli_query($cn,"CALL deleteBrand (@p0)");
 		$msg = "Data deleted with brand_id ".$did;
 	}
 	
@@ -45,8 +46,8 @@
 	{
 		$msg = $_REQUEST["msg"];
 	}
-	$qr="select * from brand";
-	$res = mysqli_query($cn,$qr);
+
+	$res = mysqli_query($cn,"CALL getAllBrands()");
 	
 	
 	?>

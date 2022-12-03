@@ -3,15 +3,6 @@
 <head>
 	<title>Order Placed</title>
 	<?php include 'head.php';?>
-	<script type="text/javascript" >
-		function del(id)
-		{
-			if(confirm("Do you want to delete "+id+" data?"))
-			{
-				window.location="userviewcart.php?del_id="+id;
-			}
-		}
-	</script>
 </head>
 <body>
 
@@ -21,38 +12,13 @@
 
 	if(!isset($_SESSION["uid"]))
 	{
-		header("location:userlogin.php?msg=Sorry your session expired");
+		header("location:index.php?msg=Sorry your session expired");
 	}
 
 
 	?>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="./userhomepg.php">NUMart</a>
-
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="userprogrid.php">View Products<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userprofile.php">View Profile<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="userviewcart.php">View Cart<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="orderhistory.php">View Orders<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userlogout.php">Logout</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	<?php include("usernav.php"); ?>
 	<br>
 	<center><h2 style="color : white;">ORDER PLACED</h2></center>
 	<div class="container table-responsive">
@@ -70,8 +36,10 @@
 					<?php
 			include("connect.php");
 			$cid = $_REQUEST["cid"];
-			$qr = "select * from ordr where c_id=".$cid;
-			$res = mysqli_query($cn,$qr);
+			$p1 = "SET @p0='".$cid."'";
+			mysqli_query($cn,$p1);
+			$res = mysqli_query($cn,"CALL getCartOrder (@p0)");
+			mysqli_next_result($cn);
 			
 		
 		while($row = mysqli_fetch_array($res))
@@ -90,8 +58,13 @@
 			$oid = $row[0];
 		}
 		
-		$qr1 = "update cart set status='complete' where c_id='".$cid."'";
-		mysqli_query($cn,$qr1);
+		$p1 = "SET @p0='".$cid."'";
+		$p2 = "SET @p1=complete";
+		mysqli_query($cn,$p1);
+		mysqli_query($cn,$p2);
+
+		mysqli_query($cn,"CALL updateCartStatus (@p0, @p1)");
+		mysqli_next_result($cn);
 		?>
 				</tbody>
 			</table>
@@ -100,8 +73,11 @@
         <center><h2 style="color : white;">ORDER DETAILS</h2></center>
         
         <?php
-		$qr="select * from orderdetails where o_id=".$oid."";
-		$res = mysqli_query($cn,$qr);
+        $p1 = "SET @p0='".$oid."'";
+		mysqli_query($cn,$p1);
+
+		$res = mysqli_query($cn,"CALL getOrderDetails (@p0)");
+		mysqli_next_result($cn);
 		
 	
 	?>
@@ -123,15 +99,17 @@
 		while($row = mysqli_fetch_array($res))
 		{
 			$pri = $row[4]/$row[3];
-			$qr2="select pname from product where pid=".$row[2];
-			$res2 = mysqli_query($cn,$qr2);
+			$p1 = "SET @p0='".$row[2]."'";
+			mysqli_query($cn,$p1);
+			$res2 = mysqli_query($cn, "CALL getProduct (@p0)");
+			mysqli_next_result($cn);
 			$pronm = mysqli_fetch_array($res2);
 		
 		?>
         
         <tr>
             <td><?php echo $row[2] ?></td>
-            <td><?php echo $pronm[0] ?></td>
+            <td><?php echo $pronm[1] ?></td>
             <td><?php echo $pri ?></td>
             <td><?php echo $row[3] ?></td>
             <td><?php echo $row[4] ?></td>

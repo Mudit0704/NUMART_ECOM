@@ -15,8 +15,9 @@
     }
 
     $adminId = $_REQUEST["admin_id"];
-    $qr = "select * from admin where admin_id=".$adminId;
-    $res = mysqli_query($cn,$qr);
+    $p1 = "SET @p0='".$adminId."'";
+    mysqli_query($cn,$p1);
+    $res = mysqli_query($cn,"CALL getAdminDetails (@p0)");
     $row = mysqli_fetch_array($res);
     include("adminnav.php");
     ?>

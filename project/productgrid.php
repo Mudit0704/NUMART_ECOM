@@ -39,13 +39,15 @@
 	if($_REQUEST["del_id"]<>"")
 	{
 		$did = $_REQUEST["del_id"];
-		$qr = "delete from product where pid=".$did;
-		mysqli_query($cn,$qr);
+		$p1 = "SET @p0='".$did."'";
+	
+		mysqli_query($cn,$p1);
+		mysqli_query($cn,"CALL deleteProduct (@p0)");
 		$msg = "Data deleted with pid ".$did;
 	}
 	
 	$qr="SELECT * FROM `product` p1 ,brand b1, type t1 WHERE b1.brand_id= p1.bid and p1.tid = t1.type_id ";
-	$result = mysqli_query($cn,$qr);
+	$result = mysqli_query($cn,"CALL getAllProductDetails()");
 	
 	?>
 	

@@ -26,32 +26,7 @@
 
 	?>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="./userhomepg.php">NUMart</a>
-
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="userprogrid.php">View Products<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userprofile.php">View Profile<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="userviewcart.php">View Cart<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="orderhistory.php">View Orders<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userlogout.php">Logout</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	<?php include("usernav.php"); ?>
 	<br>
 
 	<?php
@@ -65,12 +40,19 @@
 	}
 
 	$uid = $_SESSION["uemail"];
-	$cr = "select * from cart where user_id='".$uid."'and status='ongoing'";
-	$res1 = mysqli_query($cn,$cr);
+	$p1 = "SET @p0='".$uid."'";
+	mysqli_query($cn,$p1);
+	$res1 = mysqli_query($cn, "CALL getOngoingUserCart (@p0)");
+	mysqli_next_result($cn);
 
 	$typ = $_REQUEST["typ"];
-	$qr4 = "select addr from useradr where uemail='".$uid."' and adrtype='".$typ."'";
-	$res4 = mysqli_query($cn,$qr4);
+	$p1 = "SET @p0='".$uid."'";
+	$p2 = "SET @p1='".$typ."'";
+	mysqli_query($cn,$p1);
+	mysqli_query($cn,$p2);
+
+	$res4 = mysqli_query($cn, "CALL getUserSpecificAddress (@p0, @p1)");
+	mysqli_next_result($cn);
 	$row4 = mysqli_fetch_array($res4);
 
 	?>
@@ -110,8 +92,10 @@
 	<?php
 
 	$_SESSION["cid"] = $cid;
-	$qr="select * from detail_cart where c_id='".$cid."'";
-	$res = mysqli_query($cn,$qr);
+	$p1 = "SET @p0='".$cid."'";
+	mysqli_query($cn,$p1);
+	$res = mysqli_query($cn, "CALL getDetailedCart (@p0)");
+	mysqli_next_result($cn);
 
 	
 	?>
@@ -133,15 +117,17 @@
 				while($row = mysqli_fetch_array($res))
 				{
 					$pri = $row[4]/$row[3];
-					$qr2="select pname from product where pid=".$row[2];
-					$res2 = mysqli_query($cn, $qr2);
+					$p1 = "SET @p0='".$row[2]."'";
+					mysqli_query($cn,$p1);
+					$res2 = mysqli_query($cn, "CALL getProduct (@p0)");
+					mysqli_next_result($cn);
 					$pronm = mysqli_fetch_array($res2);
 
 					?>
 
 					<tr>
 						<td><?php echo $row[2] ?></td>
-						<td><?php echo $pronm[0] ?></td>
+						<td><?php echo $pronm[1] ?></td>
 						<td><?php echo $pri ?></td>
 						<td><?php echo $row[3] ?></td>
 						<td><?php echo $row[4] ?></td>
@@ -151,8 +137,10 @@
 
 					$totalamt = $totalamt + $row[4];
 				}
-				$qr3 = "select * from useradr where uemail='".$uid."'";
-				$res3 = mysqli_query($cn,$qr3);
+				$p1 = "SET @p0='".$uid."'";
+				mysqli_query($cn,$p1);
+				$res3 = mysqli_query($cn, "CALL getUserSavedAddresses (@p0)");
+				mysqli_next_result($cn);
 				$_SESSION["totalamt"] = $totalamt;
 				?>
 			</tbody>
@@ -169,7 +157,7 @@
 					</div>
 					<div class="col-md-5">
 						<label style="color: white;">Select Saved Address</label>
-						<select class="custom-select" name="st" onBlur="printAdd(this)">
+						<select class="custom-select" name="st" onchange="printAdd(this)">
 							<option value="-1">Select</option>
 							<?php
 
@@ -179,8 +167,8 @@
 								{
 
 									?>	
-
-									<option value="<?php echo $row3[3] ?>" selected><?php echo $row3[3] ?></option>	
+									
+									<option value="<?php echo $row3[3] ?>" selected ><?php echo $row3[3] ?></option>
 
 									<?php
 
@@ -205,7 +193,7 @@
 				<div class="form-row">
 					<div class="col-md-6">
 						<label style="color: white;">Delivery Address</label>
-						<input type="text" class="form-control " value="<?php echo $row4[0] ?>" required>
+						<input type="text" class="form-control " value="<?php echo $row4[0] ?>" readonly>
 					</div>
 					<div class="col-md-6">
 						<label  style="color: white;">Payment Option</label>

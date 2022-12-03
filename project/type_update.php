@@ -23,10 +23,11 @@
 	include("connect.php");
 	
 	$type_id = $_REQUEST["type_id"];
+	$p1 = "SET @p0='".$type_id."'";
 	
-	$qr = "select * from type where type_id=".$type_id;
+	mysqli_query($cn,$p1);
 	
-	$res = mysqli_query($cn,$qr);
+	$res = mysqli_query($cn,"CALL getTypeDetails (@p0)");
 	
 	$row = mysqli_fetch_array($res);
 	

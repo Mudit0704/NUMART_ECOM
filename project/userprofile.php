@@ -3,14 +3,6 @@
 <head>
 	<script type="text/javascript">
 		
-		function check_id(c,c1)
-		{
-			y= c.value;
-			x= c1.value;
-			
-			window.location= "usersignup.php?uid="+x+"&name="+y;
-		}
-		
 		function checkBlank(c1,msg)
 		{
 			x = c1.value;
@@ -58,41 +50,27 @@
 	?>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="./userhomepg.php">NUMart</a>
+	<?php
 
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="userprogrid.php">View Products<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="userprofile.php">View Profile<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userviewcart.php">View Cart<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="orderhistory.php">View Orders<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userlogout.php">Logout</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+    include("connect.php");
+
+    if(!isset($_SESSION["uid"]))
+    {
+        header("location:index.php?msg=Sorry your session expired");
+    }
+
+
+    ?>
+	<?php include("usernav.php"); ?>
 
 	<?php
 	include("connect.php");
 
 	$uid = $_SESSION["uid"];
+	$p1 = "SET @p0='".$uid."'";
+	mysqli_query($cn,$p1);
 
-	$qr = "select * from userdetails where uid=".$uid;
-
-	$res = mysqli_query($cn,$qr);
+	$res = mysqli_query($cn,"CALL getUserDetails (@p0)");
 
 	$row = mysqli_fetch_array($res);
 
@@ -120,7 +98,7 @@
 				<div class="form-row">
 					<div class="col-md-8">
 						<label for="validationServer05" style="color: white;">Password</label>
-						<input type="text" class="form-control " name="p1txt" value="<?php echo $row[3] ?>">
+						<input type="text" class="form-control " name="p1txt" value="<?php echo $row[3] ?>" maxlength="255">
 					</div>
 					<div class="col-md-4">
 						<label for="validationServer05" style="color: white;">Gender</label>
@@ -172,7 +150,7 @@
 				<div class="form-row">
 					<div class="form-group col-md-12">
 						<label for="validationServerUsername" style="color: white;">Address</label>
-						<textarea class="form-control" name="adtxt" rows="5" cols="50" placeholder="Enter Address"><?php echo $row[5] ?></textarea>
+						<textarea class="form-control" name="adtxt" rows="5" cols="50" placeholder="Enter Address" maxlength="5000"><?php echo $row[5] ?></textarea>
 					</div>
 				</div>
 				<button class="btn btn-primary btn-outline-dark" type="submit" name="submit" value="Update" onClick="return checkForm(frm2)" style="width: 100%;">Update</button>

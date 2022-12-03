@@ -4,10 +4,14 @@
 	
 	$bid = $_REQUEST["prtxt"];
 	$nam = $_REQUEST["btxt"];
+
+	$p1 = "SET @p0='".$bid."'";
+	$p2 = "SET @p1='".$nam."'";
 	
-	$qr="update brand set brand_name='".$nam."' where brand_id=".$bid;
+	mysqli_query($cn,$p1);
+	mysqli_query($cn,$p2);
 	
-	mysqli_query($cn,$qr);
+	mysqli_query($cn,"CALL updateBrand (@p0, @p1)");
 	header("location:brandgrid.php?msg=Record updated from brand_id=".$bid);
 	
 

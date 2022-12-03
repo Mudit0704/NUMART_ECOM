@@ -22,13 +22,9 @@
 
 	$msg="";
 
-	$qr = "select * from type";
-
-	$res = mysqli_query($cn,$qr);
-
-	$br = "select * from brand";
-
-	$res1 = mysqli_query($cn,$br);
+	$res = mysqli_query($cn,"CALL getAllTypes ()");
+	mysqli_next_result($cn);
+	$res1 = mysqli_query($cn,"CALL getAllBrands ()");
 
 
 	?>
@@ -41,7 +37,7 @@
 						<label for="validationServer01" style="color: white;">Choose Product Image</label>
 						<div class="input-group">
 							<div class="custom-file">
-								<input type="file" class="custom-file-input" name="f" id="customFile">
+								<input type="file" class="custom-file-input" name="f" id="customFile" required>
 								<label class="custom-file-label" for="customFile">Choose file</label>
 							</div>
 						</div>

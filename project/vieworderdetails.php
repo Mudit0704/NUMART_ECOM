@@ -12,46 +12,24 @@
 
 	if(!isset($_SESSION["uid"]))
 	{
-		header("location:userlogin.php?msg=Sorry your session expired");
+		header("location:index.php?msg=Sorry your session expired");
 	}
 
 
 	?>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="./userhomepg.php">NUMart</a>
-
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="userprogrid.php">View Products<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userprofile.php">View Profile<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userviewcart.php">View Cart<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="orderhistory.php">View Orders<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="userlogout.php">Logout</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	<?php include("usernav.php"); ?>
 	<br>
 	<?php
 
 	include("connect.php");
 	$status = "";
 	$oid = $_REQUEST["oid"];
-	$qr = "select p1.pid,pname,qty,p1.price,od1.oid,adrtype,paytype,od1.st from ordr o1 ,orderdetails od1 ,product p1 where od1.o_id=".$oid." and o1.o_id=".$oid." and od1.pid=p1.pid";
-	$res = mysqli_query($cn,$qr);
+	$p1 = "SET @p0='".$oid."'";
+    
+    mysqli_query($cn,$p1);
+	$res = mysqli_query($cn,"CALL getDetailedOrder (@p0)");
+	mysqli_next_result($cn);
 
 	?>
 	<center><h2 style="color : white;">ORDER DETAILS</h2></center>
