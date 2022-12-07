@@ -34,10 +34,10 @@ DROP PROCEDURE IF EXISTS `addBrand`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addBrand` (IN `brand_name` VARCHAR(255))   INSERT INTO brand VALUES ('', brand_name)$$
 
 DROP PROCEDURE IF EXISTS `addCart`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addCart` (IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `status` VARCHAR(255))  MODIFIES  DATA INSERT INTO cart VALUES ('', user_email, date, status)$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addCart` (IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `status` VARCHAR(255)) INSERT INTO cart VALUES ('', user_email, date, status)$$
 
 DROP PROCEDURE IF EXISTS `addOrder`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addOrder` (IN `cart_id` INT, IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `payment_type` VARCHAR(10), IN `address_type` VARCHAR(255), IN `total_amount` INT, IN `status` VARCHAR(500))  MODIFIES  DATA INSERT INTO `order` VALUES ('', cart_id, user_email, date, payment_type, address_type, total_amount, status)$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addOrder` (IN `cart_id` INT, IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `payment_type` VARCHAR(10), IN `address_type` VARCHAR(255), IN `total_amount` INT, IN `status` VARCHAR(500)) INSERT INTO `order` VALUES ('', cart_id, user_email, date, payment_type, address_type, total_amount, status)$$
 
 DROP PROCEDURE IF EXISTS `addOrderDetails`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addOrderDetails` (IN `order_id` INT, IN `product_id` INT, IN `quantity` INT, IN `price` INT, IN `status` VARCHAR(255))   INSERT INTO orderdetails VALUES ('', order_id, product_id, quantity, price, status)$$
