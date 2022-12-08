@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update Admin</title>
-    <?php include 'head.php';?>
-</head>
-<body>
-    <?php
+<?php
 
     include("connect.php");
 
@@ -21,6 +14,13 @@
     $row = mysqli_fetch_array($res);
     include("adminnav.php");
     ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Admin</title>
+    <?php include 'head.php';?>
+</head>
+<body>
     <br>
 
     <div class="container" style="margin: 0 auto;margin-top: 1em;max-width: 60%">

@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Products</title>
-	<?php include 'head.php';?>
-</head>
-	<body>
-
-		<?php
+<?php
 
 		include("connect.php");
 
@@ -17,6 +9,13 @@
 
 
 		?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Products</title>
+	<?php include 'head.php';?>
+</head>
+	<body>
 
 		<?php include("usernav.php"); ?>
 		<br>

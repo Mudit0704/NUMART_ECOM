@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Update Product Type</title>
-	<?php include 'head.php';
-	?>
-</head>
-<body>
-	<?php
+<?php
 
 	include("connect.php");
 
@@ -15,10 +7,18 @@
 		header("location:admin.php?msg=Sorry your session expired");
 	}
 
-	include("adminnav.php");
-
 	?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Update Product Type</title>
+	<?php include 'head.php';
+	?>
+</head>
+<body>
 	
+	
+	<?php include("adminnav.php"); ?>
 	<?php
 	include("connect.php");
 	

@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profile</title>
-    <?php include 'head.php';?>
-</head>
-<body>
-    <?php
+<?php
 
     include("connect.php");
 
@@ -14,9 +7,15 @@
         header("location:admin.php?msg=Sorry your session expired");
     }
 
-    include("adminnav.php");
-
     ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <?php include 'head.php';?>
+</head>
+<body>
+    <?php include("adminnav.php"); ?>
     <br>
 
     <div class="container" style="margin: 0 auto;margin-top: 1em;max-width: 60%">

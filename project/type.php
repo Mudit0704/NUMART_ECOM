@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Product Type</title>
-    <?php include 'head.php';
-    ?>
-</head>
-<body>
-    <?php
+<?php
 
     include("connect.php");
 
@@ -15,9 +7,16 @@
         header("location:admin.php?msg=Sorry your session expired");
     }
 
-    include("adminnav.php");
-
     ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product Type</title>
+    <?php include 'head.php';
+    ?>
+</head>
+<body>
+    <?php include("adminnav.php"); ?>
 
     <div class="container" style="margin: 0 auto;margin-top: 3em;max-width: 60%">
         <div class="jumbotron" style="background-color: #44a08d;">

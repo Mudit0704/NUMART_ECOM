@@ -3,17 +3,14 @@
 	include("connect.php");
 	$oid = $_REQUEST["oid"];
 	$st = $_REQUEST["st"];
+	$p1 = "SET @p1='".$st."'";
+	$p2 = "SET @p0='".$oid."'";
 	
-	$qr1="update orderdetails set st='".$st."' where o_id=".$oid;
-	mysqli_query($cn,$qr1);
+	mysqli_query($cn,$p2);
+	mysqli_query($cn,$p1);
 
-	$qr2="update ordr set st='".$st."' where o_id=".$oid;
-	mysqli_query($cn,$qr2);
+	mysqli_query($cn,"CALL updateOrderStatus (@p0, @p1)");
 	
-	$qr3="select o_id from orderdetails where o_id=".$oid;
-	$res2 = mysqli_query($cn,$qr3);
-	$row2 = mysqli_fetch_array($res2);
-	
-	header("location:admin_orderDetails.php?oid=".$row2[0]."&msg=Order updated Successfully!");
+	header("location:admin_orderDetails.php?oid=".$oid."&msg=Order updated Successfully!");
 
 ?>

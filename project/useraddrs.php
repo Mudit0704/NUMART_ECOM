@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add New Address</title>
-    <?php include 'head.php';?>
-</head>
-<body>
-    <?php
+<?php
 
     include("connect.php");
 
@@ -16,6 +9,13 @@
 
 
     ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Address</title>
+    <?php include 'head.php';?>
+</head>
+<body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="validationServer01" style="color: white;">Suitable Delivery Timing</label>
-                        <input type="text" class="form-control " nname="tm">
+                        <input type="text" class="form-control " name="tm">
                     </div>
                 </div>
                 <div class="form-row">

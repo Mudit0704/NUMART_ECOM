@@ -1,3 +1,14 @@
+<?php
+
+    include("connect.php");
+
+    if(!isset($_SESSION["uid"]))
+    {
+        header("location:index.php?msg=Sorry your session expired");
+    }
+
+
+    ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,17 +61,6 @@
 	?>
 </head>
 <body>
-	<?php
-
-    include("connect.php");
-
-    if(!isset($_SESSION["uid"]))
-    {
-        header("location:index.php?msg=Sorry your session expired");
-    }
-
-
-    ?>
 	<?php include("usernav.php"); ?>
 
 	<?php

@@ -43,8 +43,9 @@
 
 		$p1 = "SET @p0='".$user_id."'";
 		mysqli_query($cn,$p1);
-		$res = mysqli_query($cn, "CALL getOngoingUserCart (@p0)");
-		$row = mysqli_fetch_array($res);
+		$res2 = mysqli_query($cn, "CALL getOngoingUserCart (@p0)");
+		$row = mysqli_fetch_array($res2);
+		
 		mysqli_next_result($cn);
 		
 		$p1 = "SET @p0='".$row[0]."'";

@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Order Details</title>
-	<?php include 'head.php';?>
-</head>
-<body>
-
-	<?php
+<?php
 
 	include("connect.php");
 
@@ -15,9 +7,15 @@
 		header("location:userlogin.php?msg=Sorry your session expired");
 	}
 
-	include("adminnav.php");
-
 	?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Order Details</title>
+	<?php include 'head.php';?>
+</head>
+<body>
+	<?php include("adminnav.php"); ?>
 	<?php
 
 	include("connect.php");
@@ -26,17 +24,24 @@
 	$user_id = "";
 	$status = "";
 	$oid = $_REQUEST["oid"];
-	$qr = "select p1.pid,pname,qty,p1.price,od1.oid,adrtype,paytype,od1.st from ordr o1 ,orderdetails od1 ,product p1 where od1.o_id=".$oid." and o1.o_id=".$oid." and od1.pid=p1.pid";
-	$res = mysqli_query($cn,$qr);
+	$p1 = "SET @p0='".$oid."'";
+    
+    mysqli_query($cn,$p1);
+	$res = mysqli_query($cn,"CALL getDetailedOrder (@p0)");
+	mysqli_next_result($cn);
 
 	if($row2 = mysqli_fetch_array($res))
 	{
 		
 		$addr_type = $row2[5];
 	}
-	$res = mysqli_query($cn,$qr);
+	$res = mysqli_query($cn,"CALL getDetailedOrder (@p0)");
+	mysqli_next_result($cn);
+	
+	$p1 = "SET @p0='".$oid."'";
+	mysqli_query($cn,$p1);
 
-	$qr2 = "select o1.user_id from ordr o1 where o1.o_id = '".$oid."'";
+	$qr2 = "select o1.user_Id from `order` o1 where o1.order_Id = '".$oid."'";
 	$res2 = mysqli_query($cn,$qr2);
 
 	if($row = mysqli_fetch_array($res2))
@@ -46,9 +51,14 @@
 	}
 
 	
+	$p1 = "SET @p0='".$user_id."'";
+	$p2 = "SET @p1='".$addr_type."'";
+	mysqli_query($cn,$p1);
+	mysqli_query($cn,$p2);
 
-	$qr3 = "select addr from useradr where uemail = '".$user_id."' and adrtype = '".$addr_type."'";
-	$res3 = mysqli_query($cn,$qr3);
+	$res3 = mysqli_query($cn, "CALL getUserSpecificAddress (@p0, @p1)");
+	mysqli_next_result($cn);
+	
 	if($row3 = mysqli_fetch_array($res3))
 	{
 		
@@ -74,9 +84,7 @@
 
 				while($row = mysqli_fetch_array($res))
 				{
-					if($row[7]=='pending')
-					{
-						?>	        
+					?>	        
 						<tr>
 							<td><?php echo $row[1] ?></td>
 							<td><?php echo $row[2] ?></td>
@@ -87,21 +95,7 @@
 						</tr>
 
 						<?php
-					}
-					else
-					{
-						?>
-						<tr>
-							<td><?php echo $row[1] ?></td>
-							<td><?php echo $row[2] ?></td>
-							<td><?php echo $row[3] ?></td>
-							<td><?php echo $addr ?></td>
-							<td><?php echo $row[6] ?></td>
-							<td><?php echo $row[7] ?></td>
-						</tr>
-
-						<?php
-					}
+					
 					$status = $row[7];
 				}
 				?>
@@ -112,7 +106,7 @@
 			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>" class = "btn" style = "float: right; pointer-events: none;">Cancel</a>
 			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>" class = "btn" style = "float: right; pointer-events: none;margin-right: 2px;">Processing</a>
 			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>" class = "btn" style = "float: right; pointer-events: none;margin-right: 2px;">Dispatched</a>
-			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>&st=Delivered" class = "btn" style = "float: right; pointer-events: none;margin-right: 2px;">Delivered</a>
+			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>" class = "btn" style = "float: right; pointer-events: none;margin-right: 2px;">Delivered</a>
 		<?php } else { ?>
 			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>&st=Cancelled" class = "btn" style = "float: right;">Cancel</a>
 			<a href="admin_orderUpdate.php?oid=<?php echo $oid ?>&st=Processing" class = "btn" style = "float: right;margin-right: 2px;">Processing</a>

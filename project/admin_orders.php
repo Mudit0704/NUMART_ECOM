@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Orders</title>
-    <?php include 'head.php';?>
-</head>
-<body>
-
-    <?php
+<?php
 
     include("connect.php");
 
@@ -15,9 +7,16 @@
         header("location:admin.php?msg=Sorry your session expired");
     }
 
-    include("adminnav.php");
-
     ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders</title>
+    <?php include 'head.php';?>
+</head>
+<body>
+
+    <?php include("adminnav.php"); ?>
     <br>
 
     <center><h2 style="color : white;">ORDERS</h2></center><br/>
@@ -26,7 +25,6 @@
         
             include("connect.php"); 
             $uid = $_SESSION["uemail"];
-            $qr = "SELECT * from ordr order by o_id desc";
             $res = mysqli_query($cn,"CALL getAllOrders()");
             
         ?>

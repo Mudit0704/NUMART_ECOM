@@ -1,3 +1,12 @@
+<?php
+    
+    include("connect.php");
+    
+    if(!isset($_SESSION["uid"]))
+    {
+        header("location:admin.php?msg=Sorry your session expired");
+    };  
+    ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,17 +15,7 @@
     ?>
 </head>
 <body>
-    <?php
-    
-    include("connect.php");
-    
-    if(!isset($_SESSION["uid"]))
-    {
-        header("location:admin.php?msg=Sorry your session expired");
-    }
-    
-    include("adminnav.php");  
-    ?>
+    <?php include("adminnav.php"); ?>
 
     <div class="container" style="margin: 0 auto;margin-top: 3em;max-width: 60%">
         <div class="jumbotron" style="background-color: #44a08d;">

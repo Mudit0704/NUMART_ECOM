@@ -9,13 +9,9 @@
 	$totalamt = $_SESSION["totalamt"];
 	$stats = 'Ordered';
 	
-	$qr = "select dt from cart where c_id=".$cid;
-	$res = mysqli_query($cn,$qr);
-	$row = mysqli_fetch_array($res);
-	
 	$p1 = "SET @p0='".$cid."'";
 	$p2 = "SET @p1='".$user_id."'";
-	$p3 = "SET @p2='".$row[0]."'";
+	$p3 = "SET @p2='".date("Y/m/d")."'";
 	$p4 = "SET @p3='".$paytype."'";
 	$p5 = "SET @p4='".$addrty."'";
 	$p6 = "SET @p5='".$totalamt."'";
