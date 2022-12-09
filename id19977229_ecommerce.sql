@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 08, 2022 at 04:38 AM
+-- Generation Time: Dec 09, 2022 at 10:34 PM
 -- Server version: 10.5.16-MariaDB
 -- PHP Version: 7.3.32
 
@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `status` varchar(500) NOT NULL,
   PRIMARY KEY (`cart_id`),
   KEY `cart_user_fk` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cart`
@@ -295,7 +295,8 @@ CREATE TABLE IF NOT EXISTS `cart` (
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `creation_date`, `status`) VALUES
 (50, 'mudit@gmail.com', '2022/12/08', ''),
-(51, 'mudit@gmail.com', '2022/12/08', '');
+(51, 'mudit@gmail.com', '2022/12/08', ''),
+(52, 'arushagarwal@gmail.com', '2022/12/08', 'ongoing');
 
 -- --------------------------------------------------------
 
@@ -311,9 +312,9 @@ CREATE TABLE IF NOT EXISTS `detailedcart` (
   `quantity` int(11) NOT NULL,
   `price` double NOT NULL,
   PRIMARY KEY (`detailCart_ID`),
-  KEY `detailCart_cart_fk` (`cart_id`),
-  KEY `detailCart_product_fk` (`product_Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
+  KEY `detailCart_product_fk` (`product_Id`),
+  KEY `detailCart_cart_fk` (`cart_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `detailedcart`
@@ -327,7 +328,9 @@ INSERT INTO `detailedcart` (`detailCart_ID`, `cart_id`, `product_Id`, `quantity`
 (74, 51, 12, 1, 30),
 (75, 51, 13, 1, 50),
 (76, 51, 11, 1, 100),
-(77, 51, 14, 1, 150);
+(77, 51, 14, 1, 150),
+(78, 52, 21, 1, 100),
+(79, 52, 22, 2, 40);
 
 -- --------------------------------------------------------
 
@@ -392,7 +395,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 
 INSERT INTO `order` (`order_Id`, `cart_Id`, `user_Id`, `creation_date`, `payment_type`, `address_type`, `total_amt`, `status`) VALUES
 (28, 50, 'mudit@gmail.com', '2022/12/08', 'COD', 'Work', 400, 'Ordered'),
-(29, 51, 'mudit@gmail.com', '2022/12/08', 'CARD', 'Home', 330, 'Ordered');
+(29, 51, 'mudit@gmail.com', '2022/12/08', 'CARD', 'Home', 330, 'Dispatched');
 
 --
 -- Triggers `order`
@@ -435,10 +438,10 @@ INSERT INTO `orderdetails` (`orderDetails_id`, `order_id`, `product_id`, `quanti
 (25, 28, 18, 1, 50, 'Ordered'),
 (26, 28, 19, 3, 75, 'Ordered'),
 (27, 28, 20, 5, 75, 'Ordered'),
-(28, 29, 12, 1, 30, 'Ordered'),
-(29, 29, 13, 1, 50, 'Ordered'),
-(30, 29, 11, 1, 100, 'Ordered'),
-(31, 29, 14, 1, 150, 'Ordered');
+(28, 29, 12, 1, 30, 'Dispatched'),
+(29, 29, 13, 1, 50, 'Dispatched'),
+(30, 29, 11, 1, 100, 'Dispatched'),
+(31, 29, 14, 1, 150, 'Dispatched');
 
 -- --------------------------------------------------------
 
@@ -544,7 +547,7 @@ CREATE TABLE IF NOT EXISTS `useraddress` (
   `address` varchar(5000) NOT NULL,
   PRIMARY KEY (`address_id`),
   KEY `address_user_fk` (`user_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `useraddress`
@@ -552,7 +555,8 @@ CREATE TABLE IF NOT EXISTS `useraddress` (
 
 INSERT INTO `useraddress` (`address_id`, `user_id`, `user_email`, `address_type`, `preferred_time`, `address`) VALUES
 (13, 18, 'mudit@gmail.com', 'Home', 'morning', '822 Huntington Avenue, Boston-02115'),
-(14, 18, 'mudit@gmail.com', 'Work', 'night', '760 Huntington Avenue, Boston-02115');
+(14, 18, 'mudit@gmail.com', 'Work', 'night', '760 Huntington Avenue, Boston-02115'),
+(15, 17, 'arushagarwal@gmail.com', 'Home', 'morning', '1209 boylston street, boston-02116');
 
 -- --------------------------------------------------------
 
