@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 09, 2022 at 10:34 PM
+-- Generation Time: Dec 10, 2022 at 12:45 AM
 -- Server version: 10.5.16-MariaDB
 -- PHP Version: 7.3.32
 
@@ -29,108 +29,108 @@ DELIMITER $$
 -- Procedures
 --
 DROP PROCEDURE IF EXISTS `addAdmin`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addAdmin` (IN `admin_name` VARCHAR(255), IN `userId` VARCHAR(255), IN `admin_password` VARCHAR(255), IN `admin_type` VARCHAR(2))  INSERT INTO admin VALUES (NULL, admin_name, userId, admin_password, admin_type)$$
+CREATE  PROCEDURE `addAdmin` (IN `admin_name` VARCHAR(255), IN `userId` VARCHAR(255), IN `admin_password` VARCHAR(255), IN `admin_type` VARCHAR(2))  INSERT INTO admin VALUES (NULL, admin_name, userId, admin_password, admin_type)$$
 
 DROP PROCEDURE IF EXISTS `addBrand`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addBrand` (IN `brand_name` VARCHAR(255))  BEGIN
+CREATE  PROCEDURE `addBrand` (IN `brand_name` VARCHAR(255))  BEGIN
 DECLARE EXIT HANDLER FOR 1062 SELECT 'Duplicate keys error encountered' Message;
 INSERT INTO brand VALUES (NULL, brand_name);
 END$$
 
 DROP PROCEDURE IF EXISTS `addCart`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addCart` (IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `status` VARCHAR(255))  MODIFIES SQL DATA
+CREATE  PROCEDURE `addCart` (IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `status` VARCHAR(255))  MODIFIES SQL DATA
     SQL SECURITY INVOKER
 INSERT INTO cart VALUES (NULL, user_email, date, status)$$
 
 DROP PROCEDURE IF EXISTS `addOrder`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addOrder` (IN `cart_id` INT, IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `payment_type` VARCHAR(10), IN `address_type` VARCHAR(255), IN `total_amount` INT, IN `status` VARCHAR(500))  INSERT INTO `order` VALUES (NULL, cart_id, user_email, date, payment_type, address_type, total_amount, status)$$
+CREATE  PROCEDURE `addOrder` (IN `cart_id` INT, IN `user_email` VARCHAR(255), IN `date` VARCHAR(255), IN `payment_type` VARCHAR(10), IN `address_type` VARCHAR(255), IN `total_amount` INT, IN `status` VARCHAR(500))  INSERT INTO `order` VALUES (NULL, cart_id, user_email, date, payment_type, address_type, total_amount, status)$$
 
 DROP PROCEDURE IF EXISTS `addOrderDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addOrderDetails` (IN `order_id` INT, IN `product_id` INT, IN `quantity` INT, IN `price` INT, IN `status` VARCHAR(255))  INSERT INTO orderdetails VALUES (NULL, order_id, product_id, quantity, price, status)$$
+CREATE  PROCEDURE `addOrderDetails` (IN `order_id` INT, IN `product_id` INT, IN `quantity` INT, IN `price` INT, IN `status` VARCHAR(255))  INSERT INTO orderdetails VALUES (NULL, order_id, product_id, quantity, price, status)$$
 
 DROP PROCEDURE IF EXISTS `addProduct`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addProduct` (IN `product_name` VARCHAR(255), IN `brand_id` INT, IN `type_id` INT, IN `file_name` VARCHAR(500), IN `price` INT, IN `addition_date` VARCHAR(255), IN `availability` VARCHAR(1), IN `addedBy` VARCHAR(255))  INSERT INTO product VALUES (NULL, product_name, brand_id, type_id, file_name, price, addition_date, availability, addedBy)$$
+CREATE  PROCEDURE `addProduct` (IN `product_name` VARCHAR(255), IN `brand_id` INT, IN `type_id` INT, IN `file_name` VARCHAR(500), IN `price` INT, IN `addition_date` VARCHAR(255), IN `availability` VARCHAR(1), IN `addedBy` VARCHAR(255))  INSERT INTO product VALUES (NULL, product_name, brand_id, type_id, file_name, price, addition_date, availability, addedBy)$$
 
 DROP PROCEDURE IF EXISTS `addToDetailCart`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addToDetailCart` (IN `cart_id` INT, IN `product_id` INT, IN `quantity` INT, IN `amount` INT)  INSERT INTO detailedcart VALUES (NULL, cart_id, product_id, quantity, amount)$$
+CREATE  PROCEDURE `addToDetailCart` (IN `cart_id` INT, IN `product_id` INT, IN `quantity` INT, IN `amount` INT)  INSERT INTO detailedcart VALUES (NULL, cart_id, product_id, quantity, amount)$$
 
 DROP PROCEDURE IF EXISTS `addType`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addType` (IN `type_name` VARCHAR(255))  BEGIN
+CREATE  PROCEDURE `addType` (IN `type_name` VARCHAR(255))  BEGIN
 DECLARE EXIT HANDLER FOR 1062 SELECT 'Duplicate keys error encountered' Message;
 INSERT INTO producttype VALUES (NULL, type_name);
 END$$
 
 DROP PROCEDURE IF EXISTS `addUser`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addUser` (IN `user_name` VARCHAR(255), IN `user_email` VARCHAR(255), IN `user_password` VARCHAR(255), IN `user_gender` VARCHAR(1), IN `user_address` VARCHAR(5000))  BEGIN
+CREATE  PROCEDURE `addUser` (IN `user_name` VARCHAR(255), IN `user_email` VARCHAR(255), IN `user_password` VARCHAR(255), IN `user_gender` VARCHAR(1), IN `user_address` VARCHAR(5000))  BEGIN
 DECLARE EXIT HANDLER FOR 1062 SELECT 'Duplicate keys error encountered' Message;
 INSERT INTO userdetails VALUES (NULL, user_name, user_email, user_password, user_gender, user_address);
 END$$
 
 DROP PROCEDURE IF EXISTS `addUserAddress`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `addUserAddress` (IN `user_id` INT, IN `user_email` VARCHAR(255), IN `address_type` VARCHAR(255), IN `preferred_time` VARCHAR(255), IN `address` VARCHAR(5000))  INSERT INTO useraddress VALUES (NULL, user_id, user_email, address_type, preferred_time, address)$$
+CREATE  PROCEDURE `addUserAddress` (IN `user_id` INT, IN `user_email` VARCHAR(255), IN `address_type` VARCHAR(255), IN `preferred_time` VARCHAR(255), IN `address` VARCHAR(5000))  INSERT INTO useraddress VALUES (NULL, user_id, user_email, address_type, preferred_time, address)$$
 
 DROP PROCEDURE IF EXISTS `cancelOrder`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `cancelOrder` (IN `order_id` INT)  UPDATE `order` SET order.status = "Cancelled" WHERE order.order_Id = order_id$$
+CREATE  PROCEDURE `cancelOrder` (IN `order_id` INT)  UPDATE `order` SET order.status = "Cancelled" WHERE order.order_Id = order_id$$
 
 DROP PROCEDURE IF EXISTS `checkAdminCredentials`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `checkAdminCredentials` (IN `userId` VARCHAR(255), IN `password` VARCHAR(255))  select * from admin a where a.userId=userId and a.password=password$$
+CREATE  PROCEDURE `checkAdminCredentials` (IN `userId` VARCHAR(255), IN `password` VARCHAR(255))  select * from admin a where a.userId=userId and a.password=password$$
 
 DROP PROCEDURE IF EXISTS `checkUserCredentials`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `checkUserCredentials` (IN `user_email` VARCHAR(255), IN `user_password` VARCHAR(255))  SELECT * FROM userdetails WHERE userdetails.user_email = user_email and userdetails.user_pass = user_password$$
+CREATE  PROCEDURE `checkUserCredentials` (IN `user_email` VARCHAR(255), IN `user_password` VARCHAR(255))  SELECT * FROM userdetails WHERE userdetails.user_email = user_email and userdetails.user_pass = user_password$$
 
 DROP PROCEDURE IF EXISTS `deleteAdmin`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `deleteAdmin` (IN `admin_id` INT)  DELETE from admin where admin.admin_id = admin_id$$
+CREATE  PROCEDURE `deleteAdmin` (IN `admin_id` INT)  DELETE from admin where admin.admin_id = admin_id$$
 
 DROP PROCEDURE IF EXISTS `deleteBrand`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `deleteBrand` (IN `brand_id` INT)  DELETE FROM brand where brand.brand_id = brand_id$$
+CREATE  PROCEDURE `deleteBrand` (IN `brand_id` INT)  DELETE FROM brand where brand.brand_id = brand_id$$
 
 DROP PROCEDURE IF EXISTS `deleteFromDetailedCart`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `deleteFromDetailedCart` (IN `detailCart_id` INT)  DELETE FROM detailedcart WHERE detailedcart.detailCart_ID = detailCart_id$$
+CREATE  PROCEDURE `deleteFromDetailedCart` (IN `detailCart_id` INT)  DELETE FROM detailedcart WHERE detailedcart.detailCart_ID = detailCart_id$$
 
 DROP PROCEDURE IF EXISTS `deleteProduct`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `deleteProduct` (IN `product_id` INT)  DELETE FROM product WHERE product.product_id = product_id$$
+CREATE  PROCEDURE `deleteProduct` (IN `product_id` INT)  DELETE FROM product WHERE product.product_id = product_id$$
 
 DROP PROCEDURE IF EXISTS `deleteType`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `deleteType` (IN `type_id` INT)  DELETE FROM producttype where producttype.type_id = type_id$$
+CREATE  PROCEDURE `deleteType` (IN `type_id` INT)  DELETE FROM producttype where producttype.type_id = type_id$$
 
 DROP PROCEDURE IF EXISTS `getAdminDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getAdminDetails` (IN `admin_id` INT)  SELECT * FROM admin WHERE admin.admin_id = admin_id$$
+CREATE  PROCEDURE `getAdminDetails` (IN `admin_id` INT)  SELECT * FROM admin WHERE admin.admin_id = admin_id$$
 
 DROP PROCEDURE IF EXISTS `getAllAdmins`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getAllAdmins` ()  SELECT * FROM admin$$
+CREATE  PROCEDURE `getAllAdmins` ()  SELECT * FROM admin$$
 
 DROP PROCEDURE IF EXISTS `getAllBrands`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getAllBrands` ()  BEGIN
+CREATE  PROCEDURE `getAllBrands` ()  BEGIN
 DECLARE EXIT HANDLER FOR 1146 SELECT 'Please create table brand first' Message;
 SELECT * FROM brand;
 END$$
 
 DROP PROCEDURE IF EXISTS `getAllOrders`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getAllOrders` ()  BEGIN
+CREATE  PROCEDURE `getAllOrders` ()  BEGIN
 DECLARE EXIT HANDLER FOR 1146 SELECT 'Please create table order first' Message;
 SELECT * FROM `order` ORDER BY order_id DESC;
 END$$
 
 DROP PROCEDURE IF EXISTS `getAllProductDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getAllProductDetails` ()  SELECT * FROM product p INNER JOIN brand b on b.brand_id = p.brand_id INNER JOIN producttype pt on pt.type_id = p.producttype_id$$
+CREATE  PROCEDURE `getAllProductDetails` ()  SELECT * FROM product p INNER JOIN brand b on b.brand_id = p.brand_id INNER JOIN producttype pt on pt.type_id = p.producttype_id$$
 
 DROP PROCEDURE IF EXISTS `getAllTypes`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getAllTypes` ()  BEGIN
+CREATE  PROCEDURE `getAllTypes` ()  BEGIN
 DECLARE EXIT HANDLER FOR 1146 SELECT 'Please create table producttype first' Message;
 SELECT * FROM producttype;
 END$$
 
 DROP PROCEDURE IF EXISTS `getBrandDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getBrandDetails` (IN `brand_id` INT)  SELECT * FROM brand where brand.brand_id = brand_id$$
+CREATE  PROCEDURE `getBrandDetails` (IN `brand_id` INT)  SELECT * FROM brand where brand.brand_id = brand_id$$
 
 DROP PROCEDURE IF EXISTS `getCartOrder`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getCartOrder` (IN `cart_id` INT)  SELECT * FROM `order` where order.cart_Id = cart_id$$
+CREATE  PROCEDURE `getCartOrder` (IN `cart_id` INT)  SELECT * FROM `order` where order.cart_Id = cart_id$$
 
 DROP PROCEDURE IF EXISTS `getDetailedCart`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getDetailedCart` (IN `cart_id` INT)  SELECT * FROM detailedcart WHERE detailedcart.cart_id = cart_id$$
+CREATE  PROCEDURE `getDetailedCart` (IN `cart_id` INT)  SELECT * FROM detailedcart WHERE detailedcart.cart_id = cart_id$$
 
 DROP PROCEDURE IF EXISTS `getDetailedOrder`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getDetailedOrder` (IN `order_id` INT)  SELECT p.product_id
+CREATE  PROCEDURE `getDetailedOrder` (IN `order_id` INT)  SELECT p.product_id
       ,p.product_name
       ,o2.quantity
       ,p.price
@@ -145,40 +145,40 @@ FROM `order` o1
      WHERE o1.order_Id = order_id$$
 
 DROP PROCEDURE IF EXISTS `getOngoingUserCart`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getOngoingUserCart` (IN `user_email` VARCHAR(255))  SELECT * FROM cart where cart.user_id = user_email and cart.status = "ongoing"$$
+CREATE  PROCEDURE `getOngoingUserCart` (IN `user_email` VARCHAR(255))  SELECT * FROM cart where cart.user_id = user_email and cart.status = "ongoing"$$
 
 DROP PROCEDURE IF EXISTS `getOrderDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getOrderDetails` (IN `order_id` INT)  SELECT * FROM orderdetails WHERE orderdetails.order_id = order_id$$
+CREATE  PROCEDURE `getOrderDetails` (IN `order_id` INT)  SELECT * FROM orderdetails WHERE orderdetails.order_id = order_id$$
 
 DROP PROCEDURE IF EXISTS `getProduct`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getProduct` (IN `product_id` INT)  SELECT * FROM product WHERE product.product_id = product_id$$
+CREATE  PROCEDURE `getProduct` (IN `product_id` INT)  SELECT * FROM product WHERE product.product_id = product_id$$
 
 DROP PROCEDURE IF EXISTS `getTypeDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getTypeDetails` (IN `type_id` INT)  SELECT * FROM producttype where producttype.type_id = type_id$$
+CREATE  PROCEDURE `getTypeDetails` (IN `type_id` INT)  SELECT * FROM producttype where producttype.type_id = type_id$$
 
 DROP PROCEDURE IF EXISTS `getUserDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getUserDetails` (IN `user_id` INT)  SELECT * FROM userdetails WHERE userdetails.user_id = user_id$$
+CREATE  PROCEDURE `getUserDetails` (IN `user_id` INT)  SELECT * FROM userdetails WHERE userdetails.user_id = user_id$$
 
 DROP PROCEDURE IF EXISTS `getUserOrders`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getUserOrders` (IN `user_email` VARCHAR(255))  SELECT * FROM `order` WHERE order.user_Id = user_email ORDER BY order.order_Id DESC$$
+CREATE  PROCEDURE `getUserOrders` (IN `user_email` VARCHAR(255))  SELECT * FROM `order` WHERE order.user_Id = user_email ORDER BY order.order_Id DESC$$
 
 DROP PROCEDURE IF EXISTS `getUserSavedAddresses`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getUserSavedAddresses` (IN `user_email` VARCHAR(255))  SELECT * FROM useraddress WHERE useraddress.user_email = user_email$$
+CREATE  PROCEDURE `getUserSavedAddresses` (IN `user_email` VARCHAR(255))  SELECT * FROM useraddress WHERE useraddress.user_email = user_email$$
 
 DROP PROCEDURE IF EXISTS `getUserSpecificAddress`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `getUserSpecificAddress` (IN `user_email` VARCHAR(255), IN `address_type` VARCHAR(255))  SELECT useraddress.address FROM useraddress where useraddress.user_email = user_email and useraddress.address_type = address_type$$
+CREATE  PROCEDURE `getUserSpecificAddress` (IN `user_email` VARCHAR(255), IN `address_type` VARCHAR(255))  SELECT useraddress.address FROM useraddress where useraddress.user_email = user_email and useraddress.address_type = address_type$$
 
 DROP PROCEDURE IF EXISTS `updateAdmin`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateAdmin` (IN `admin_id` INT, IN `admin_name` VARCHAR(255), IN `userId` VARCHAR(255), IN `admin_password` VARCHAR(255), IN `admin_type` VARCHAR(2))  UPDATE admin a SET a.admin_name = admin_name, a.userId = userId, a.password = admin_password, a.admintype = admin_type WHERE a.admin_id = admin_id$$
+CREATE  PROCEDURE `updateAdmin` (IN `admin_id` INT, IN `admin_name` VARCHAR(255), IN `userId` VARCHAR(255), IN `admin_password` VARCHAR(255), IN `admin_type` VARCHAR(2))  UPDATE admin a SET a.admin_name = admin_name, a.userId = userId, a.password = admin_password, a.admintype = admin_type WHERE a.admin_id = admin_id$$
 
 DROP PROCEDURE IF EXISTS `updateBrand`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateBrand` (IN `brand_id` INT, IN `brand_name` VARCHAR(255))  UPDATE brand SET brand.brand_name = brand_name WHERE brand.brand_id = brand_id$$
+CREATE  PROCEDURE `updateBrand` (IN `brand_id` INT, IN `brand_name` VARCHAR(255))  UPDATE brand SET brand.brand_name = brand_name WHERE brand.brand_id = brand_id$$
 
 DROP PROCEDURE IF EXISTS `updateCartStatus`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateCartStatus` (IN `cart_id` INT, IN `status` VARCHAR(255))  UPDATE cart SET cart.status = status WHERE cart.cart_id = cart_id$$
+CREATE  PROCEDURE `updateCartStatus` (IN `cart_id` INT, IN `status` VARCHAR(255))  UPDATE cart SET cart.status = status WHERE cart.cart_id = cart_id$$
 
 DROP PROCEDURE IF EXISTS `updateOrderStatus`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateOrderStatus` (IN `order_id` INT, IN `order_status` VARCHAR(255))  UPDATE
+CREATE  PROCEDURE `updateOrderStatus` (IN `order_id` INT, IN `order_status` VARCHAR(255))  UPDATE
   `order`
 SET
   `order`.`status` = order_status
@@ -186,19 +186,19 @@ WHERE
   `order`.`order_Id` = order_id$$
 
 DROP PROCEDURE IF EXISTS `updateProduct`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateProduct` (IN `product_id` INT, IN `product_name` VARCHAR(500), IN `brand_id` INT, IN `type_id` INT, IN `image_file` VARCHAR(500), IN `price` INT, IN `creation_date` VARCHAR(255), IN `availability` VARCHAR(1), IN `addedBy` VARCHAR(255))  UPDATE product p SET p.product_name = product_name, p.brand_id = brand_id, p.producttype_id = type_id, p.product_image = image_file, p.price = price, p.addition_date = creation_date, p.availability = availability, p.addedby = addedBy$$
+CREATE  PROCEDURE `updateProduct` (IN `product_id` INT, IN `product_name` VARCHAR(500), IN `brand_id` INT, IN `type_id` INT, IN `image_file` VARCHAR(500), IN `price` INT, IN `creation_date` VARCHAR(255), IN `availability` VARCHAR(1), IN `addedBy` VARCHAR(255))  UPDATE product p SET p.product_name = product_name, p.brand_id = brand_id, p.producttype_id = type_id, p.product_image = image_file, p.price = price, p.addition_date = creation_date, p.availability = availability, p.addedby = addedBy WHERE p.product_id = product_id$$
 
 DROP PROCEDURE IF EXISTS `updateType`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateType` (IN `type_id` INT, IN `type_name` VARCHAR(255))  UPDATE producttype SET producttype.type_name = type_name WHERE producttype.type_id = type_id$$
+CREATE  PROCEDURE `updateType` (IN `type_id` INT, IN `type_name` VARCHAR(255))  UPDATE producttype SET producttype.type_name = type_name WHERE producttype.type_id = type_id$$
 
 DROP PROCEDURE IF EXISTS `updateUserDetails`$$
-CREATE DEFINER=`id19977229_root`@`%` PROCEDURE `updateUserDetails` (IN `user_id` INT, IN `user_name` VARCHAR(255), IN `user_gender` VARCHAR(1), IN `user_address` VARCHAR(5000), IN `user_password` VARCHAR(255))  UPDATE userdetails SET userdetails.user_name = user_name, userdetails.gender = user_gender, userdetails.address = user_address, userdetails.user_pass = user_password WHERE userdetails.user_id = user_id$$
+CREATE  PROCEDURE `updateUserDetails` (IN `user_id` INT, IN `user_name` VARCHAR(255), IN `user_gender` VARCHAR(1), IN `user_address` VARCHAR(5000), IN `user_password` VARCHAR(255))  UPDATE userdetails SET userdetails.user_name = user_name, userdetails.gender = user_gender, userdetails.address = user_address, userdetails.user_pass = user_password WHERE userdetails.user_id = user_id$$
 
 --
 -- Functions
 --
 DROP FUNCTION IF EXISTS `checkUserWithEmailExists`$$
-CREATE DEFINER=`id19977229_root`@`%` FUNCTION `checkUserWithEmailExists` (`user_email` VARCHAR(255)) RETURNS INT(11) READS SQL DATA
+CREATE  FUNCTION `checkUserWithEmailExists` (`user_email` VARCHAR(255)) RETURNS INT(11) READS SQL DATA
     DETERMINISTIC
 BEGIN
 DECLARE ALREADYEXIST INT;
@@ -593,7 +593,7 @@ INSERT INTO `userdetails` (`user_id`, `user_name`, `user_email`, `user_pass`, `g
 --
 DROP TABLE IF EXISTS `avg_order_values`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VIEW `avg_order_values`  AS  select avg(`order`.`total_amt`) AS `avg_orders_value` from `order` ;
+CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `avg_order_values`  AS  select avg(`order`.`total_amt`) AS `avg_orders_value` from `order` ;
 
 -- --------------------------------------------------------
 
@@ -602,7 +602,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VI
 --
 DROP TABLE IF EXISTS `num_of_orders_for_address_type`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VIEW `num_of_orders_for_address_type`  AS  select `order`.`address_type` AS `address_type`,count(0) AS `num_of_orders` from `order` group by `order`.`address_type` ;
+CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `num_of_orders_for_address_type`  AS  select `order`.`address_type` AS `address_type`,count(0) AS `num_of_orders` from `order` group by `order`.`address_type` ;
 
 -- --------------------------------------------------------
 
@@ -611,7 +611,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VI
 --
 DROP TABLE IF EXISTS `num_of_products_of_a_brand`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VIEW `num_of_products_of_a_brand`  AS  select `brand`.`brand_name` AS `brand_name`,count(0) AS `num_of_products` from (`product` join `brand` on(`product`.`brand_id` = `brand`.`brand_id`)) group by `product`.`brand_id` order by `brand`.`brand_name` ;
+CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `num_of_products_of_a_brand`  AS  select `brand`.`brand_name` AS `brand_name`,count(0) AS `num_of_products` from (`product` join `brand` on(`product`.`brand_id` = `brand`.`brand_id`)) group by `product`.`brand_id` order by `brand`.`brand_name` ;
 
 -- --------------------------------------------------------
 
@@ -620,7 +620,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VI
 --
 DROP TABLE IF EXISTS `num_of_products_of_a_type`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VIEW `num_of_products_of_a_type`  AS  select `producttype`.`type_name` AS `type_name`,count(0) AS `num_of_products` from (`product` join `producttype` on(`producttype`.`type_id` = `product`.`producttype_id`)) group by `product`.`producttype_id` order by `producttype`.`type_name` ;
+CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `num_of_products_of_a_type`  AS  select `producttype`.`type_name` AS `type_name`,count(0) AS `num_of_products` from (`product` join `producttype` on(`producttype`.`type_id` = `product`.`producttype_id`)) group by `product`.`producttype_id` order by `producttype`.`type_name` ;
 
 -- --------------------------------------------------------
 
@@ -629,7 +629,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VI
 --
 DROP TABLE IF EXISTS `popular_product`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VIEW `popular_product`  AS  select `product`.`product_name` AS `product_name`,`brand`.`brand_name` AS `brand_name` from (`product` join `brand` on(`product`.`brand_id` = `brand`.`brand_id`)) where `product`.`product_id` = (select `orderdetails`.`product_id` from `orderdetails` group by `orderdetails`.`product_id` order by sum(`orderdetails`.`quantity`) desc limit 1) ;
+CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `popular_product`  AS  select `product`.`product_name` AS `product_name`,`brand`.`brand_name` AS `brand_name` from (`product` join `brand` on(`product`.`brand_id` = `brand`.`brand_id`)) where `product`.`product_id` = (select `orderdetails`.`product_id` from `orderdetails` group by `orderdetails`.`product_id` order by sum(`orderdetails`.`quantity`) desc limit 1) ;
 
 -- --------------------------------------------------------
 
@@ -638,7 +638,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VI
 --
 DROP TABLE IF EXISTS `preferred_payment_mode`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id19977229_root`@`%` SQL SECURITY DEFINER VIEW `preferred_payment_mode`  AS  select `order`.`payment_type` AS `payment_type`,count(`order`.`payment_type`) AS `orders_with_payment` from `order` group by `order`.`payment_type` order by count(`order`.`payment_type`) desc limit 1 ;
+CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `preferred_payment_mode`  AS  select `order`.`payment_type` AS `payment_type`,count(`order`.`payment_type`) AS `orders_with_payment` from `order` group by `order`.`payment_type` order by count(`order`.`payment_type`) desc limit 1 ;
 
 --
 -- Constraints for dumped tables
